@@ -1,0 +1,45 @@
+# render.yaml
+services:
+  # Backend API Service
+  - type: web
+    name: helagovi-lk-api
+    env: node
+    region: singapore
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: PUBLIC_URL
+        value: https://api.helagovi.lk
+      - key: FRONTEND_URL
+        value: https://www.helagovi.lk
+
+  # Frontend Web Service
+  - type: web
+    name: helagovi-lk-frontend
+    env: node
+    region: singapore
+    plan: starter
+    buildCommand: |
+      cd frontend
+      npm install
+      npm run build
+    startCommand: |
+      cd frontend
+      npx serve -s dist -l $PORT
+    rootDir: .
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: VITE_API_URL
+        value: https://api.helagovi.lk/api
+      - key: VITE_SOCKET_URL
+        value: https://api.helagovi.lk
+
